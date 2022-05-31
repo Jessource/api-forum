@@ -15,6 +15,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 
+import br.com.alura.forum.repository.UsuarioRepository;
+
 @EnableWebSecurity // habilita o spring security// essa classe vai conter toda a minha configuração de segurança
 @Configuration // por ser uma classe de configuração temos que usar essa anotação para configurar uns bins do spring
 
@@ -24,6 +26,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter   {//es
 	
 	@Autowired
 	private TokenService tokenService;
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 	
 	//configurações de autenticações/controle de login/acesso
 	@Override
@@ -44,7 +48,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter   {//es
 			.anyRequest().authenticated()
 			.and().csrf().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//diz pra não criar a seção pq vai criar token
-			.and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService), UsernamePasswordAuthenticationFilter.class);
+			.and().addFilterBefore(new AutenticacaoViaTokenFilter(tokenService,usuarioRepository), UsernamePasswordAuthenticationFilter.class);
 	}
 	//confiurações statics/css/js/imagens
 	@Override

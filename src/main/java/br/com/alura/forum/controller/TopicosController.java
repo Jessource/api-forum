@@ -92,6 +92,7 @@ public class TopicosController {
 	@Transactional
 	public ResponseEntity<?> remover(@PathVariable Long id) {
 		Optional<Topico> optional = topicoRepository.findById(id);
+		System.out.println(optional.isPresent());
 		if (optional.isPresent()) {
 			topicoRepository.deleteById(id);
 			return ResponseEntity.ok().build();
