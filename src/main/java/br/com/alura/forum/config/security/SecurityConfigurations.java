@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AnyRequestMatcher;
 
 @EnableWebSecurity // habilita o spring security// essa classe vai conter toda a minha configuração de segurança
@@ -39,8 +40,9 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter   {//es
 			.antMatchers(HttpMethod.POST, "/auth").permitAll()
 			.anyRequest().authenticated()
 			.and().csrf().disable()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);//diz pra não criar a seção pq vai criar token
-		}
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)//diz pra não criar a seção pq vai criar token
+			.and().addFilterBefore(new AutenticacaoViaTokenFilter(), UsernamePasswordAuthenticationFilter.class);
+	}
 	//confiurações statics/css/js/imagens
 	@Override
 		public void configure(WebSecurity web) throws Exception {
