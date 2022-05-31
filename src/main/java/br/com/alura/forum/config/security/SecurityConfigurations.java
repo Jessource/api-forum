@@ -44,6 +44,7 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter   {//es
 			http.authorizeRequests()
 			.antMatchers(HttpMethod.GET, "/topicos").permitAll() //antMatchers libera os métodos que quero passar, no caso passei o get e mais alguma coisa
 			.antMatchers(HttpMethod.GET, "/topicos/*").permitAll()
+			.antMatchers(HttpMethod.GET, "/actuator").permitAll()
 			.antMatchers(HttpMethod.POST, "/auth").permitAll()
 			.anyRequest().authenticated()
 			.and().csrf().disable()
@@ -53,7 +54,8 @@ public class SecurityConfigurations extends WebSecurityConfigurerAdapter   {//es
 	//confiurações statics/css/js/imagens
 	@Override
 		public void configure(WebSecurity web) throws Exception {
-			
+		web.ignoring()
+        .antMatchers("/**.html", "/v2/api-docs", "/webjars/**", "/configuration/**", "/swagger-resources/**");
 		}
 	//public static void main(String[]args) {
 		//System.out.println(new BCryptPasswordEncoder().encode("123456")); gera senha do bcritpon
