@@ -25,13 +25,24 @@ public class TokenService {
 		Date hoje = new Date ();
 		Date dataExpiracao = new Date(hoje.getTime()+ Long.parseLong(expiration));
 		
-		return Jwts.builder()
+		return Jwts.builder()//aqui criar um token
 				.setIssuer("API do Forúm da Alura")
 				.setSubject(logado.getId().toString())
 				.setIssuedAt(hoje)
 				.setExpiration(dataExpiracao)
 				.signWith(SignatureAlgorithm.HS256,secret)
 				.compact();
+	}
+
+
+
+	public boolean isTokenValido(String token) {
+		try {
+			Jwts.parser().setSigningKey(this.secret).parseClaimsJws(token);//aqui faz o passe do token já criado
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 }
